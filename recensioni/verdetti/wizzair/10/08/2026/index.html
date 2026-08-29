@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Verdetto - [NOME COMPAGNIA/PRODOTTO]</title>
+    <style>
+        /* Import dei nuovi font da Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500&display=swap');
+
+        /* Variabili CSS per una facile personalizzazione dei colori */
+        :root {
+            --color-primary: #000000;    /* Nero per titoli e testo principale */
+            --color-accent: #343a40;     /* Grigio scuro per accenti e punteggi */
+            --color-light-gray: #ffffff;/* Bianco per sfondi principali */
+            --color-medium-gray: #f8f9fa;/* Grigio molto chiaro per sfondi secondari */
+            --color-text: #212529;       /* Grigio scuro per il testo normale */
+            --border-radius: 12px;       /* Raggio per gli angoli smussati */
+        }
+
+        /* Stili generali del corpo della pagina */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-light-gray);
+            color: var(--color-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        /* Il contenitore principale della card */
+        .verdict-card {
+            width: 100%;
+            max-width: 650px;
+            background-color: var(--color-light-gray);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid #dee2e6;
+        }
+
+        /* Intestazione */
+        .verdict-header {
+            background-color: var(--color-light-gray); /* Modificato in bianco */
+            color: var(--color-primary); /* Modificato in nero per contrasto */
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .verdict-header h1 {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
+        /* Regola aggiunta per il logo */
+        .company-logo {
+            height: 35px;
+        }
+
+        /* Sezione principale con immagine di sfondo */
+        .verdict-main {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            min-height: 250px; /* Altezza minima per l'immagine */
+            display: flex; /* Per centrare il content-wrapper */
+            align-items: center; /* Per centrare il content-wrapper */
+            justify-content: center; /* Per centrare il content-wrapper */
+            padding: 1.5rem; /* Padding intorno al content-wrapper */
+        }
+        
+        .verdict-main::before {
+            content: none; 
+        }
+
+        /* Contenitore per testo e punteggio per la leggibilità sull'immagine */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            /* === MODIFICA QUI === Sfondo reso più trasparente */
+            background: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(5px);
+            padding: 1.5rem;
+            border-radius: calc(var(--border-radius) - 4px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Ombra per staccare */
+            max-width: 90%; /* Limita la larghezza */
+            width: 100%;
+        }
+        
+        .score-and-text {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        /* Cerchio del punteggio */
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--color-primary); /* Testo nero */
+            font-size: 3.5rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            flex-shrink: 0;
+            position: relative;
+            background-color: var(--color-light-gray); /* Sfondo bianco */
+            border: 1px solid var(--color-medium-gray); /* Bordo sottile */
+        }
+        .score-circle-progress {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+        }
+        .score-circle-inner {
+            width: calc(100% - 20px);
+            height: calc(100% - 20px);
+            background-color: var(--color-light-gray); /* Interno bianco */
+            border-radius: 50%;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .verdict-text {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .verdict-text p {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Sezione Pro e Contro */
+        .pros-cons {
+            display: flex;
+            background-color: var(--color-light-gray);
+            padding: 1.5rem;
+            gap: 1.5rem;
+            border-top: 1px solid var(--color-medium-gray);
+        }
+
+        .pros, .cons {
+            flex: 1;
+            padding: 1rem;
+            border-radius: calc(var(--border-radius) - 4px);
+            border: 1px solid var(--color-medium-gray); /* Bordo grigio chiaro */
+        }
+        
+        .pros-cons .title {
+            display: block;
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            color: var(--color-primary); /* Titoli neri */
+        }
+        
+        .pros .title::before { content: '+'; margin-right: 0.5rem; color: var(--color-primary); }
+        .cons .title::before { content: '−'; margin-right: 0.5rem; color: var(--color-primary); }
+
+        .pros-cons ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+        
+        /* Sezione delle valutazioni dettagliate */
+        .ratings {
+            padding: 1.5rem;
+            background-color: var(--color-light-gray);
+            border-top: 1px solid var(--color-medium-gray);
+        }
+
+        .rating-item:not(:last-child) {
+            margin-bottom: 1.25rem;
+        }
+
+        .rating-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            color: var(--color-text); /* Testo nero */
+        }
+
+        .rating-bar-container {
+            background-color: var(--color-medium-gray); /* Sfondo barra grigio chiaro */
+            border-radius: 25px;
+            height: 12px;
+            overflow: hidden;
+        }
+        
+        .rating-bar {
+            background-color: var(--color-accent); /* Colore di riempimento grigio scuro */
+            height: 100%;
+            border-radius: 25px;
+        }
+
+        /* Media Query per schermi più piccoli */
+        @media (max-width: 576px) {
+            .score-and-text {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+            .verdict-main {
+                padding: 1rem;
+                min-height: 200px;
+            }
+            .content-wrapper {
+                padding: 1rem;
+            }
+            .pros-cons {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .pros, .cons {
+                padding: 0.75rem;
+            }
+            .verdict-header h1 {
+                font-size: 1.3rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="verdict-card">
+        <div class="verdict-header">
+            <h1>IL VERDETTO</h1>
+            <img src="https://media.aviationeagle.co.uk/loghi/europa/WizzLogo(VUOTO).png" alt="Logo WizzAir" class="company-logo">
+        </div>
+
+        <div class="verdict-main" style="background-image: url('https://img.pikbest.com/backgrounds/20190214/colorful-gradient-pseudo-3d-abstract-space-background_1861114.jpg!w700wp');">
+            <div class="content-wrapper">
+                <div class="score-and-text">
+                    
+                    <div class="score-circle">
+                         <div class="score-circle-progress" style="background: conic-gradient(var(--color-accent) 0% 95%, transparent 95% 100%);"></div>
+                        <div class="score-circle-inner">
+                            <span>9,5</span>
+                        </div>
+                    </div>
+                    
+                    <div class="verdict-text">
+                        <p>
+                            La compagnia offre un servizio di assistenza e riprotezione impeccabili, appena confertmata la cancellazione del volo, hanno subito offerto le tre opzioni: Riprotezione, Rimborso in Crediti, Rimborso sul metodo di pagamento originale.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pros-cons">
+            <div class="pros">
+                <span class="title">Pro</span>
+                <ul>
+                    <li>Servizio a Bordo</li>
+                    <li>Assistenza per Cancellazioni</li>
+                    <li>Flotta Moderna</li>
+                    
+                </ul>
+            </div>
+            <div class="cons">
+                <span class="title">Contro</span>
+                <ul>
+                    <li>Limitata scelta di pasti a bordo</li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="ratings">
+            <div class="rating-item">
+                <div class="rating-label">
+                    <span>Flotta</span>
+                    <span>8.5</span>
+                </div>
+                <div class="rating-bar-container">
+                    <div class="rating-bar" style="width: 85%;"></div>
+                </div>
+            </div>
+            
+            <div class="rating-item">
+                <div class="rating-label">
+                    <span>Scelta dei Pasti</span>
+                    <span>4</span>
+                </div>
+                <div class="rating-bar-container">
+                    <div class="rating-bar" style="width: 40%;"></div>
+                </div>
+            </div>
+            
+            <div class="rating-item">
+                <div class="rating-label">
+                    <span>Assistenza a Terra</span>
+                    <span>9.5</span>
+                </div>
+                <div class="rating-bar-container">
+                    <div class="rating-bar" style="width: 95%;"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
